@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import './App.css';
 
 interface Pokemon {
   id: number;
@@ -27,9 +26,19 @@ function usePokemon(): {
   return { pokemon };
 }
 
+const PokemonList = ({ pokemon }: { pokemon: Pokemon[] }) => {
+  return (
+    <div>
+      {pokemon.map((p) => (
+        <div key={p.id}>{p.name}</div>
+      ))}
+    </div>
+  );
+};
+
 function App() {
   const { pokemon } = usePokemon();
-  return <>{JSON.stringify(pokemon)}</>;
+  return <PokemonList pokemon={pokemon} />;
 }
 
 export default App;
