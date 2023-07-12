@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
 
 interface Pokemon {
   id: number;
@@ -26,9 +26,13 @@ function usePokemon(): {
   return { pokemon };
 }
 
+const ThemeContext = createContext('light');
+
 const PokemonList = ({ pokemon }: { pokemon: Pokemon[] }) => {
+  const theme = useContext(ThemeContext);
   return (
     <div>
+      <div>Theme: {theme}</div>
       {pokemon.map((p) => (
         <div key={p.id}>{p.name}</div>
       ))}
@@ -38,7 +42,11 @@ const PokemonList = ({ pokemon }: { pokemon: Pokemon[] }) => {
 
 function App() {
   const { pokemon } = usePokemon();
-  return <PokemonList pokemon={pokemon} />;
+  return (
+    <ThemeContext.Provider value="dark">
+      <PokemonList pokemon={pokemon} />;
+    </ThemeContext.Provider>
+  );
 }
 
 export default App;
