@@ -26,9 +26,9 @@ function usePokemonSource(): {
   return { pokemon };
 }
 
-const PokemonContext = createContext({
-  pokemon: [] as Pokemon[],
-});
+const PokemonContext = createContext<
+  ReturnType<typeof usePokemonSource> | undefined
+>({} as unknown as ReturnType<typeof usePokemonSource>);
 
 function usePokemon() {
   return useContext(PokemonContext);
