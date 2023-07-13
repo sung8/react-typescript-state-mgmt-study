@@ -32,9 +32,9 @@ function usePokemonSource(): {
   return { pokemon };
 }
 
-const PokemonContext = createContext<
-  ReturnType<typeof usePokemonSource> | undefined
->({} as unknown as ReturnType<typeof usePokemonSource>);
+const PokemonContext = createContext<ReturnType<typeof usePokemonSource>>(
+  {} as unknown as ReturnType<typeof usePokemonSource>
+);
 
 export function usePokemon() {
   return useContext(PokemonContext);
