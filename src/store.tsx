@@ -6,6 +6,7 @@ import {
   ReactNode,
   useReducer,
   useCallback,
+  useMemo,
 } from 'react';
 
 interface Pokemon {
@@ -70,7 +71,12 @@ function usePokemonSource(): {
     });
   }, []);
 
-  return { pokemon, search, setSearch };
+  const filteredPokemon = useMemo(
+    () => pokemon.filter((p) => p.name.includes(search)),
+    [pokemon, search]
+  );
+
+  return { pokemon: filteredPokemon, search, setSearch };
 }
 
 const PokemonContext = createContext<ReturnType<typeof usePokemonSource>>(
