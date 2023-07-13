@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   ReactNode,
+  useReducer,
 } from 'react';
 
 interface Pokemon {
@@ -20,16 +21,43 @@ interface Pokemon {
 
 function usePokemonSource(): {
   pokemon: Pokemon[];
+  search: string;
 } {
-  const [pokemon, setPokemon] = useState<Pokemon[]>([]);
+  // const [pokemon, setPokemon] = useState<Pokemon[]>([]);
+  // const [search, setSearch] = useState('');
+
+  type PokemonState = {
+    pokemon: Pokemon[];
+    search: string;
+  };
+
+  type PokemonAction = { type: 'setPokemon'; payload: Pokemon[] };
+
+  const [{ pokemon, search }, dispatch] = useReducer(
+    (state: PokemonState, action: PokemonAction) => {
+      switch (action.type) {
+        case 'setPokemon':
+          return { ...state, pokemon: action.payload };
+      }
+    },
+    {
+      pokemon: [],
+      search: 'foo',
+    }
+  );
 
   useEffect(() => {
     fetch('/pokemon.json')
       .then((response) => response.json())
-      .then((data) => setPokemon(data));
+      .then((data) =>
+        dispatch({
+          type: 'setPokemon',
+          payload: data,
+        })
+      );
   }, []);
 
-  return { pokemon };
+  return { pokemon, search };
 }
 
 const PokemonContext = createContext<ReturnType<typeof usePokemonSource>>(
