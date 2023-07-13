@@ -5,6 +5,7 @@ import {
   useContext,
   ReactNode,
   useReducer,
+  useCallback,
 } from 'react';
 
 interface Pokemon {
@@ -62,12 +63,12 @@ function usePokemonSource(): {
       );
   }, []);
 
-  const setSearch = (search: string) => {
+  const setSearch = useCallback((search: string) => {
     dispatch({
       type: 'setSearch',
       payload: search,
     });
-  };
+  }, []);
 
   return { pokemon, search, setSearch };
 }
